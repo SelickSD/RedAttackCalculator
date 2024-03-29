@@ -16,6 +16,15 @@ final class MainViewController: UIViewController {
         return label
     }()
 
+    private lazy var influenceTableLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Выбери местность гекса"
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        return label
+    }()
+
     private lazy var redButton: UIButton = {
         //        let cancelButtonName = NSLocalizedString("pagesView.cancelButtonName",
         //                                                 comment: "Text displayed like name of cancel button")
@@ -45,6 +54,17 @@ final class MainViewController: UIViewController {
         return button
     }()
 
+    private lazy var influenceTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.backgroundColor = .white
+        tableView.register(InfluenceTableViewCell.self,
+                           forCellReuseIdentifier: InfluenceTableViewCell.identifier)
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -61,7 +81,8 @@ final class MainViewController: UIViewController {
     }
 
     private func drawSelf() {
-        [configSideLabel, redButton, whiteButton].forEach{
+        [configSideLabel, redButton, whiteButton, 
+         influenceTableView, influenceTableLabel].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.clipsToBounds = true
             view.addSubview($0)
@@ -81,7 +102,43 @@ final class MainViewController: UIViewController {
             whiteButton.topAnchor.constraint(equalTo: configSideLabel.bottomAnchor, constant: 16),
             whiteButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 4),
             whiteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            whiteButton.heightAnchor.constraint(equalToConstant: 80)
+            whiteButton.heightAnchor.constraint(equalToConstant: 80),
+
+            influenceTableLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            influenceTableLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            influenceTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            influenceTableLabel.centerYAnchor.constraint(equalTo: redButton.bottomAnchor, constant: 40),
+
+            influenceTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            influenceTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            influenceTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            influenceTableView.topAnchor.constraint(equalTo: redButton.bottomAnchor, constant: 40)
         ])
+    }
+}
+
+//MARK: -UITableViewDelegate
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    }
+}
+
+//MARK: -UITableViewDataSource
+extension MainViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: InfluenceTableViewCell.identifier,
+                                                       for: indexPath) as? InfluenceTableViewCell else {
+            return UITableViewCell()
+        }
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
     }
 }
