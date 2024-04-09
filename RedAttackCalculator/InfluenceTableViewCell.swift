@@ -8,12 +8,21 @@ import UIKit
 final class InfluenceTableViewCell: UITableViewCell {
     static let identifier = "InfluenceTableViewCell"
 
+    private var titleAnchor = NSLayoutConstraint()
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.text = "Home"
+        return label
+    }()
+
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 7, weight: .bold)
+        label.numberOfLines = 0
+        label.textAlignment = .left
         return label
     }()
 
@@ -25,7 +34,6 @@ final class InfluenceTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupView()
     }
 
     required init?(coder: NSCoder) {
@@ -40,21 +48,43 @@ final class InfluenceTableViewCell: UITableViewCell {
         influenceSwitch.setOn(false, animated: true)
     }
 
+    func configCell(event: InfluenceEvents) {
+        titleLabel.text = event.nameString
+        if let text = event.event {
+            descriptionLabel.text = text
+            titleAnchor = titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+        } else {
+            titleAnchor = titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        }
+
+        setupView()
+    }
+
     private func setupView() {
+        [titleLabel, influenceSwitch, descriptionLabel].forEach{
+            $0.removeFromSuperview()
+        }
         self.selectionStyle = .none
         self.backgroundColor = .systemGray6
         self.clipsToBounds = true
-        [titleLabel, influenceSwitch].forEach{
+        [titleLabel, influenceSwitch, descriptionLabel].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.clipsToBounds = true
             self.addSubview($0)
         }
+
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            titleAnchor,
+
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
+            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            descriptionLabel.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: 40),
 
             influenceSwitch.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             influenceSwitch.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         ])
+
+        self.layoutIfNeeded()
     }
 }

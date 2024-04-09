@@ -7,49 +7,103 @@
 
 import Foundation
 enum InfluenceEvents {
-    case monday
-    case tuesday
-    case wednesday
-    case thursday
-    case friday
-    case saturday
-    case sunday
+    case plain
+    case swamp
+    case mountains
+    case desert
+    case river
+    case volga
+    case lake
+    case city
+    case redCity
+    case sourceOfSupply
+    case freeTerritory
+    case railway
+    case cossackCircle
+    case occupationLine
 
     var nameString: String {
         switch self {
-        case .monday:
-            return NSLocalizedString("dayOfWeek.monday", comment: "Text displayed day of week name")
-        case .tuesday:
-            return NSLocalizedString("dayOfWeek.tuesday", comment: "Text displayed day of week name")
-        case .wednesday:
-            return NSLocalizedString("dayOfWeek.wednesday", comment: "Text displayed day of week name")
-        case .thursday:
-            return NSLocalizedString("dayOfWeek.thursday", comment: "Text displayed day of week name")
-        case .friday:
-            return NSLocalizedString("dayOfWeek.friday", comment: "Text displayed day of week name")
-        case .saturday:
-            return NSLocalizedString("dayOfWeek.saturday", comment: "Text displayed day of week name")
-        case .sunday:
-            return NSLocalizedString("dayOfWeek.sunday", comment: "Text displayed day of week name")
+        case .plain:
+            return "Равнина"
+        case .swamp:
+            return "Болото"
+        case .mountains:
+            return "Горы"
+        case .desert:
+            return "Пустыня"
+        case .river:
+            return "Река"
+        case .volga:
+            return "Волга"
+        case .lake:
+            return "Озеро"
+        case .city:
+            return "Город"
+        case .redCity:
+            return "Красный город"
+        case .sourceOfSupply:
+            return "Источник снабжения"
+        case .freeTerritory:
+            return "Вольная территория"
+        case .railway:
+            return "Железная дорога"
+        case .cossackCircle:
+            return "Казачий круг"
+        case .occupationLine:
+            return "Оккупационная линия"
         }
     }
 
-    var shortName: String {
+    var influence: Int? {
         switch self {
-        case .monday:
-            return NSLocalizedString("dayOfWeek.short.monday", comment: "Text displayed day of week short name")
-        case .tuesday:
-            return NSLocalizedString("dayOfWeek.short.tuesday", comment: "Text displayed day of week short name")
-        case .wednesday:
-            return NSLocalizedString("dayOfWeek.short.wednesday", comment: "Text displayed day of week short name")
-        case .thursday:
-            return NSLocalizedString("dayOfWeek.short.thursday", comment: "Text displayed day of week short name")
-        case .friday:
-            return NSLocalizedString("dayOfWeek.short.friday", comment: "Text displayed day of week short name")
-        case .saturday:
-            return NSLocalizedString("dayOfWeek.short.saturday", comment: "Text displayed day of week short name")
-        case .sunday:
-            return NSLocalizedString("dayOfWeek.short.sunday", comment: "Text displayed day of week short name")
+        case .plain:
+            return 0
+        case .swamp:
+            return 0
+        case .mountains:
+            return 1
+        case .desert:
+            return nil
+        case .river:
+            return 1
+        case .volga:
+            return 1
+        case .lake:
+            return nil
+        case .city:
+            return 1
+        case .redCity:
+            return 1
+        case .sourceOfSupply:
+            return 0
+        case .freeTerritory:
+            return 0
+        case .railway:
+            return 0
+        case .cossackCircle:
+            return 0
+        case .occupationLine:
+            return 0
+        }
+    }
+
+    var event: String? {
+        switch self {
+        case .desert:
+            return "Запрещено"
+        case .river:
+            return "Кроме атак из гекса вдоль той же самой реки либо вдоль как минимум 2 из 3 линий рек, проходящих в гексе обороняющегося"
+        case .volga:
+            return "Кроме атак из гекса вдоль той же самой реки либо вдоль как минимум 2 из 3 линий рек, проходящих в гексе обороняющегося"
+        case .lake:
+            return "Запрещено"
+        case .redCity:
+            return "Только если красные в обороне"
+        case .railway:
+            return "Можно разместить / использовать бронепоезд"
+        default:
+            return nil
         }
     }
 }

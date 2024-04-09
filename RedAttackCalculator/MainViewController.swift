@@ -7,6 +7,14 @@
 import UIKit
 final class MainViewController: UIViewController {
 
+    let events: [InfluenceEvents] = [.plain, .swamp, .mountains,
+                                     .desert, .river, .volga,
+                                     .lake, .city, .redCity,
+                                     .sourceOfSupply, .freeTerritory,
+                                     .railway, .cossackCircle,
+                                     .occupationLine
+    ]
+
     private lazy var configSideLabel: UILabel = {
         let label = UILabel()
         label.text = "Выбери атакующую армию"
@@ -112,7 +120,7 @@ final class MainViewController: UIViewController {
             influenceTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             influenceTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             influenceTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            influenceTableView.topAnchor.constraint(equalTo: redButton.bottomAnchor, constant: 40)
+            influenceTableView.topAnchor.constraint(equalTo: redButton.bottomAnchor, constant: 50)
         ])
     }
 }
@@ -126,7 +134,7 @@ extension MainViewController: UITableViewDelegate {
 //MARK: -UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return events.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -134,6 +142,8 @@ extension MainViewController: UITableViewDataSource {
                                                        for: indexPath) as? InfluenceTableViewCell else {
             return UITableViewCell()
         }
+
+        cell.configCell(event: events[indexPath.row])
 
         return cell
     }
