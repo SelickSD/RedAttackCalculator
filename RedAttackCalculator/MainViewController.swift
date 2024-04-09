@@ -7,13 +7,15 @@
 import UIKit
 final class MainViewController: UIViewController {
 
-    let events: [InfluenceEvents] = [.plain, .swamp, .mountains,
+    private let events: [InfluenceEvents] = [.plain, .swamp, .mountains,
                                      .desert, .river, .volga,
                                      .lake, .city, .redCity,
                                      .sourceOfSupply, .freeTerritory,
                                      .railway, .cossackCircle,
                                      .occupationLine
     ]
+
+    private var selectedEvents: [InfluenceEvents] = []
 
     private lazy var configSideLabel: UILabel = {
         let label = UILabel()
@@ -128,6 +130,14 @@ final class MainViewController: UIViewController {
 //MARK: -UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let index = selectedEvents.firstIndex(of: events[indexPath.row]) {
+            selectedEvents.remove(at: index)
+        } else {
+            selectedEvents.append(events[indexPath.row])
+        }
+
+        let cell = tableView.cellForRow(at: indexPath) as? InfluenceTableViewCell
+        cell?.influenceSwitchToggle()
     }
 }
 
@@ -143,7 +153,12 @@ extension MainViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        cell.configCell(event: events[indexPath.row])
+        let event = events[indexPath.row]
+        if selectedEvents.contains(event) {
+            cell.configCell(event: event, isActiveEvent: true)
+        } else {
+            cell.configCell(event: event, isActiveEvent: false)
+        }
 
         return cell
     }

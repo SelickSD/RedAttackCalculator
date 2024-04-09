@@ -29,6 +29,7 @@ final class InfluenceTableViewCell: UITableViewCell {
     private lazy var influenceSwitch: UISwitch = {
         let button = UISwitch()
         button.onTintColor = .systemBlue
+        button.isEnabled = false
         return button
     }()
 
@@ -40,15 +41,15 @@ final class InfluenceTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setSwitchOn() {
-        influenceSwitch.setOn(true, animated: true)
+    func influenceSwitchToggle() {
+        if influenceSwitch.isOn {
+            influenceSwitch.setOn(false, animated: true)
+        } else {
+            influenceSwitch.setOn(true, animated: true)
+        }
     }
 
-    func setSwitchOff() {
-        influenceSwitch.setOn(false, animated: true)
-    }
-
-    func configCell(event: InfluenceEvents) {
+    func configCell(event: InfluenceEvents, isActiveEvent: Bool) {
         titleLabel.text = event.nameString
         if let text = event.event {
             descriptionLabel.text = text
@@ -56,7 +57,7 @@ final class InfluenceTableViewCell: UITableViewCell {
         } else {
             titleAnchor = titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         }
-
+        influenceSwitch.isOn =  isActiveEvent
         setupView()
     }
 
